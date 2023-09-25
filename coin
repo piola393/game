@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript">
+    var TARGET_IOS_PRE = "https://coinmaster.onelink.me/2792196939?pid=FB_PAGE";
+    var TARGET_IOS_POST = "&af_dp=coinmaster%3A%2F%2Fpromotions&af_web_dp=https%3A%2F%2Fitunes.apple.com%2Fgb%2Fapp%2Fcoin-master%2Fid406889139";
+    var TARGET_ANDROID = "coinmaster://promotions?af_deeplink=true";
+    var TARGET_DESKTOP = "https://apps.facebook.com/coin-master/";
+
+    function getPlatform() {
+        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if (/android/i.test(userAgent)) {
+            return "android";
+        }
+        // IE11 fakes user agent to fool Gmail in Windows Phone 8.1 GDR1 update
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return "ios";
+        }
+        return "unknown";
+    }
+
+    function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+    }
+
+    function getUrl(platform) {
+        var url = "";
+        var campaign = getURLParameter("c");
+
+        if (campaign.startsWith("ev_")) document.getElementById("btn").src = "button_play.png";
+
+        switch (getPlatform()) {
+            case "ios":
+            case "android":
+                url = TARGET_ANDROID;
+                if (campaign) {
+                    url += "&campaign=" + encodeURIComponent(campaign) + "&media_source=FB_PAGE";
+                }
+                break;
+            default:
+                url = TARGET_DESKTOP;
+                if (campaign) {
+                    url += "campaign=" + encodeURIComponent(campaign);
+                }
+        }
+
+        return url;
+    }
+    </script>
+    <style type="text/css">
+    body {
+        height: 100%;
+        overflow-y: hidden;
+    }
+
+    div.bg {
+        background: url(reward.jpg) center no-repeat;
+        background-size: cover;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    div.button {
+        position: absolute;
+        top: 71%;
+        width: 58%;
+        margin-left: -28%;
+        left: 50%;
+    }
+
+    div.button img {
+        width: 100%;
+    }
+
+    body.hidden
+    {
+        display: none
+    }
+
+    </style>
+</head>
+
+<body class="hidden">
+    <div class="bg" />
+    <div class="button">
+        <div id="url"></div>
+        <a id="link" href="#"><img id="btn" src="button.png" border="0"></a>
+    </div>
+    <script type="text/javascript">
+    var url = getUrl(getPlatform());
+    //document.getElementById("url").innerHTML = url;
+    document.getElementById("link").href = url;
+
+    if (getPlatform() == "ios") {
+           document.body.className = ""
+    }
+    else {
+           window.location = url;
+    }
+    </script>
+</body>
+
+</html>
